@@ -28,7 +28,7 @@ import (
 	"time"
 	"unicode"
 
-	"github.com/golang/groupcache/lru"
+	lru "github.com/hashicorp/golang-lru"
 )
 
 // KeyStreamerAt is the second interface a handler can implement.
@@ -329,8 +329,9 @@ type scao struct {
 }
 
 func (b scao) adapterOpt(a *Adapter) error {
-	a.sizeCache = lru.New(b.numCachedSizes)
-	return nil
+	var err error
+	a.sizeCache, err = lru.New(b.numCachedSizes)
+	return err
 }
 
 // SizeCache is an option that determines how many key sizes will be cached by
@@ -400,7 +401,7 @@ func NewAdapter(keyStreamer KeyStreamerAt, opts ...AdapterOption) (*Adapter, err
 		bc.cache, _ = NewLRUCache(bc.numCachedBlocks)
 	}
 	if bc.sizeCache == nil {
-		bc.sizeCache = lru.New(1000)
+		bc.sizeCache, _ = lru.New(1000)
 	}
 	return bc, nil
 }

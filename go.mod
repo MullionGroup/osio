@@ -9,7 +9,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.17.7
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.27.11
 	github.com/aws/smithy-go v1.13.3
-	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da
+	github.com/hashicorp/golang-lru v0.5.4
 	github.com/stretchr/testify v1.8.0
 	google.golang.org/api v0.97.0
 )
