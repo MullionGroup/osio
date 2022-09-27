@@ -34,8 +34,8 @@ Google Cloud Storage bucket.
 
 ```go
 import(
-    "github.com/airbusgeo/osio"
-    "github.com/airbusgeo/osio/gcs"
+    "github.com/MullionGroup/osio"
+    "github.com/MullionGroup/osio/gcs"
 )
 func ExampleGSHandle_zip() {
     ctx := context.Background()
@@ -72,8 +72,8 @@ func ExampleGSHandle_zip() {
 ```go
 import(
     aws3 "github.com/aws/aws-sdk-go-v2/service/s3"
-    "github.com/airbusgeo/osio"
-    "github.com/airbusgeo/osio/s3"
+    "github.com/MullionGroup/osio"
+    "github.com/MullionGroup/osio/s3"
 )
 func WithS3Region(region string) func(opts *aws3.Options) {
 	return func(opts *aws3.Options) {

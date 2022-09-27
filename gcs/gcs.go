@@ -22,8 +22,8 @@ import (
 	"syscall"
 
 	"cloud.google.com/go/storage"
+	"github.com/MullionGroup/osio/internal"
 	"github.com/airbusgeo/errs"
-	"github.com/airbusgeo/osio/internal"
 	"google.golang.org/api/googleapi"
 )
 
@@ -33,7 +33,7 @@ type Handler struct {
 	billingProjectID string
 }
 
-//Option is an option that can be passed to RegisterHandler
+// Option is an option that can be passed to RegisterHandler
 type GCSOption func(o *Handler)
 
 // Client sets the cloud.google.com/go/storage.Client that will be used
