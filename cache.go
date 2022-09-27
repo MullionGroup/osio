@@ -20,7 +20,7 @@ import (
 	"strings"
 	"time"
 
-	lru "github.com/hashicorp/golang-lru"
+	"github.com/golang/groupcache/lru"
 )
 
 type LRUCache struct {
@@ -31,10 +31,7 @@ type LRUCache struct {
 var _ BlockCacher = &LRUCache{}
 
 func NewLRUCache(numEntries int) (*LRUCache, error) {
-	c, err := lru.New(numEntries)
-	if err != nil {
-		return nil, fmt.Errorf("lru.new: %w", err)
-	}
+	c := lru.New(numEntries)
 	r := rand.New(rand.NewSource(time.Now().Unix()))
 	var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 	b := make([]rune, 5)
@@ -60,7 +57,7 @@ func (cg *LRUCache) Get(key string, id uint) ([]byte, bool) {
 
 func (cg *LRUCache) PurgeKey(prefix string) {
 	prefix = fmt.Sprintf("%s-%s-", prefix, cg.random)
-	for _, k := range cg.c.Keys() {
+	for k := range cg.c.Cache {
 		if strings.HasPrefix(k.(string), prefix) {
 			cg.c.Remove(k)
 		}
@@ -68,7 +65,7 @@ func (cg *LRUCache) PurgeKey(prefix string) {
 }
 
 func (cg *LRUCache) Purge() {
-	cg.c.Purge()
+	cg.c.Clear()
 }
 
 func skey(key string, random string, id uint) string {

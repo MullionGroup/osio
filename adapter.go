@@ -28,7 +28,7 @@ import (
 	"time"
 	"unicode"
 
-	lru "github.com/hashicorp/golang-lru"
+	"github.com/golang/groupcache/lru"
 )
 
 // KeyStreamerAt is the second interface a handler can implement.
@@ -84,7 +84,7 @@ type NamedOnceMutex interface {
 	Unlock(key interface{})
 }
 
-//Logger is used to optionally log requests to the underlying KetStreamerAt
+// Logger is used to optionally log requests to the underlying KetStreamerAt
 type Logger interface {
 	Log(key string, offset, length int64)
 }
@@ -329,9 +329,8 @@ type scao struct {
 }
 
 func (b scao) adapterOpt(a *Adapter) error {
-	var err error
-	a.sizeCache, err = lru.New(b.numCachedSizes)
-	return err
+	a.sizeCache = lru.New(b.numCachedSizes)
+	return nil
 }
 
 // SizeCache is an option that determines how many key sizes will be cached by
@@ -366,7 +365,7 @@ func (stdl stdLogger) Log(key string, offset, length int64) {
 	log.Printf("GET %s off=%d len=%d", key, offset, length)
 }
 
-//StdLogger is a Logger using golang's standard library logger
+// StdLogger is a Logger using golang's standard library logger
 var StdLogger stdLogger
 
 const (
@@ -401,7 +400,7 @@ func NewAdapter(keyStreamer KeyStreamerAt, opts ...AdapterOption) (*Adapter, err
 		bc.cache, _ = NewLRUCache(bc.numCachedBlocks)
 	}
 	if bc.sizeCache == nil {
-		bc.sizeCache, _ = lru.New(1000)
+		bc.sizeCache = lru.New(1000)
 	}
 	return bc, nil
 }
