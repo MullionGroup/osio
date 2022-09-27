@@ -1,4 +1,4 @@
-module github.com/airbusgeo/osio
+module github.com/MullionGroup/osio
 
 go 1.18
 
